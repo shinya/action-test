@@ -1,4 +1,4 @@
 # action-test
 
-test.test.
+test.
 変更しました。
