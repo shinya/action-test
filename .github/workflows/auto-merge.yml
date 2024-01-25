@@ -17,6 +17,8 @@ permissions:
 jobs:
   auto-merge:
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
     env:
       PR_URL: ${{github.event.pull_request.html_url}}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
