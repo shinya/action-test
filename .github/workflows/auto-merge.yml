@@ -36,9 +36,9 @@ jobs:
       #       echo 'ONLY_README=no' | tee -a "$GITHUB_ENV"
       #     fi
 
-      # - name: Approve PR
+      - name: Approve PR
       #   if: env.ONLY_README == 'yes'
-      #   run: gh pr review "$PR_URL" --approve
+        run: gh pr review "$PR_URL" --approve
 
       - name: Enable auto-merge
 #        if: env.ONLY_README == 'yes'
