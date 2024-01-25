@@ -3,5 +3,5 @@
 test.
 変更しました。
 
-Github Actionです。
+Github Actionです。  
 うまくいきますように。
