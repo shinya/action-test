@@ -4,7 +4,7 @@ on:
   pull_request_review:
     types: [submitted]
   workflow_run:
-    workflows: [Hello]
+    workflows: [test]
     types: [completed]
 
 
@@ -13,7 +13,23 @@ permissions:
   contents: write
 
 jobs:
+  Hello:
+    runs-on: ubuntu-latest
+    steps:
+      - name: set env
+        run: |
+          echo 'HELLO=yes' | tee -a "$GITHUB_ENV"
+  Hello2:
+    needs: Hello
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hello Check
+        if: env.HELLO == 'yes'
+        run: |
+          echo 'Hello, World!'
+
   auto-merge:
+    needs: [Hello, Hello2]
     if: |
       github.event.review.state == 'APPROVED'
       && github.event.workflow_run.conclusion == 'success'

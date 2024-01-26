@@ -1,4 +1,4 @@
-name: Hello
+name: test
 
 on:
   push:
@@ -18,11 +18,5 @@ jobs:
   Hello:
     runs-on: ubuntu-latest
     steps:
-      - name: set env
-        run: |
-          echo 'HELLO=yes' | tee -a "$GITHUB_ENV"
-
-      - name: Hello Check
-        if: env.HELLO == 'yes'
-        run: |
-          echo 'Hello, World!'
+      - name: Hello
+        run: echo 'Hello, World!'
