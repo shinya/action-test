@@ -1,19 +1,37 @@
 name: auto-merge
 
 on:
-  pull_request:
-    branches: [ main ]
-    types: [ opened ]
   pull_request_review:
     types: [submitted]
+  workflow_run:
+    workflows: [test]
+    types: [completed]
+
 
 permissions:
   pull-requests: write
   contents: write
 
 jobs:
+  Hello:
+    runs-on: ubuntu-latest
+    steps:
+      - name: set env
+        run: |
+          echo 'HELLO=yes' | tee -a "$GITHUB_ENV"
+  Hello2:
+    needs: Hello
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hello Check
+        if: env.HELLO == 'yes'
+        run: |
+          echo 'Hello, World!'
+
   auto-merge:
-    if: github.event.review.state == 'APPROVED'
+    needs: [Hello, Hello2]
+    if: |
+      github.event.review.state == 'APPROVED'
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write

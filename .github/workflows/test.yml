@@ -1,0 +1,22 @@
+name: test
+
+on:
+  push:
+    branches:
+      - '*'
+    tags:
+      - '*'
+    paths:
+      - '**'
+      - '!*.md'
+  pull_request:
+    paths:
+      - '**'
+      - '!*.md'
+
+jobs:
+  Hello:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hello
+        run: echo 'Hello, World!'
