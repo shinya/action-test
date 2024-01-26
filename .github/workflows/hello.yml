@@ -16,7 +16,6 @@ on:
 
 jobs:
   Hello:
-    if: github.event.review.state == 'APPROVED'
     runs-on: ubuntu-latest
     steps:
       - name: set env
