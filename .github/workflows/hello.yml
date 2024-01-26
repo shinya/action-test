@@ -1,0 +1,29 @@
+name: Hello
+
+on:
+  push:
+    branches:
+      - '*'
+    tags:
+      - '*'
+    paths:
+      - '**'
+      - '!*.md'
+  pull_request:
+    paths:
+      - '**'
+      - '!*.md'
+
+jobs:
+  Hello:
+    if: github.event.review.state == 'APPROVED'
+    runs-on: ubuntu-latest
+    steps:
+      - name: set env
+        run: |
+          echo 'HELLO=yes' | tee -a "$GITHUB_ENV"
+
+      - name: Hello Check
+        if: env.HELLO == 'yes'
+        run: |
+          echo 'Hello, World!'

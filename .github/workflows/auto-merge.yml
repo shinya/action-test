@@ -1,11 +1,12 @@
 name: auto-merge
 
 on:
-  pull_request:
-    branches: [ main ]
-    types: [ opened ]
   pull_request_review:
     types: [submitted]
+  workflow_run:
+    workflows: [Hello]
+    types: [completed]
+
 
 permissions:
   pull-requests: write
@@ -13,7 +14,9 @@ permissions:
 
 jobs:
   auto-merge:
-    if: github.event.review.state == 'APPROVED'
+    if: |
+      github.event.review.state == 'APPROVED'
+      && github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
