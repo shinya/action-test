@@ -32,7 +32,6 @@ jobs:
     needs: [Hello, Hello2]
     if: |
       github.event.review.state == 'APPROVED'
-      && github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
