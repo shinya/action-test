@@ -27,6 +27,13 @@ jobs:
         if: env.HELLO == 'yes'
         run: |
           echo ${{github.event.workflow_run.conclusion}}
+  StatusCheck:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Status Check
+        run: |
+          echo ${{github.event.workflow_run.conclusion}}
+
 
   auto-merge:
     needs: [Hello, Hello2]
