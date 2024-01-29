@@ -1,0 +1,15 @@
+name: run-check
+on:
+  check_run:
+    types: [completed]
+
+permissions:
+  pull-requests: write
+  contents: write
+
+jobs:
+  Hello:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checked after run
+        run: echo 'completed!'
