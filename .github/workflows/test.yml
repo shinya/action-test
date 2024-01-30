@@ -38,6 +38,7 @@ jobs:
           echo "skip always"
   ResultCheck:
     needs: [Hello, fail-job, skip-job]
+    if: ${{ always() }}
     runs-on: ubuntu-latest
     steps:
       - name: Result check
