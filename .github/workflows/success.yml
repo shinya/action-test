@@ -1,4 +1,4 @@
-name: Test
+name: Success pattern
 
 on:
   push:
@@ -20,24 +20,28 @@ jobs:
     steps:
       - name: Hello
         run: echo 'Hello, World!'
-  fail-job:
+  success-job2:
     runs-on: ubuntu-latest
     steps:
       - name: step
         run: |
           echo "do something3"
-          exit 1
-  skip-job:
-    if: false
+  success-job3:
     runs-on: ubuntu-latest
     steps:
       - name: step
         run: |
           echo "skip always"
   ResultCheck:
-    needs: [success-job, fail-job, skip-job]
+    needs: [success-job, success-job2, success-job3]
     if: ${{ always() }}
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: write
+    env:
+      PR_URL: ${{github.event.pull_request.html_url}}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Result check
         run: |
