@@ -36,6 +36,12 @@ jobs:
     needs: [success-job, success-job2, success-job3]
     if: ${{ always() }}
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: write
+    env:
+      PR_URL: ${{github.event.pull_request.html_url}}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Result check
         run: |
