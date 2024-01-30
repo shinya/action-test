@@ -20,3 +20,25 @@ jobs:
     steps:
       - name: Hello
         run: echo 'Hello, World!'
+  fail-job:
+    needs: Hello
+    runs-on: ubuntu-latest
+    steps:
+      - name: step
+        run: |
+          echo "do something3"
+          exit 1
+  skip-job:
+    needs: Hello
+    if: false
+    runs-on: ubuntu-latest
+    steps:
+      - name: step
+        run: |
+          echo "skip always"
+  ResultCheck:
+    needs: [Hello, fail-job, skip-job]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Result check
+        run: echo '${{ toJSON(needs) }}' | jq 'to_entries | map(.key + " " + .value.result) | join("\n")'

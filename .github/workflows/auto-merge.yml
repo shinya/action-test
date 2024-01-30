@@ -27,12 +27,7 @@ jobs:
         if: env.HELLO == 'yes'
         run: |
           echo ${{github.event.workflow_run.conclusion}}
-  ResultCheck:
-    needs: [Hello, Hello2]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Result check
-        run: echo '${{ toJSON(needs) }}' | jq 'to_entries | map(.key + " " + .value.result) | join("\n")'
+
     
   auto-merge:
     needs: [Hello, Hello2]
