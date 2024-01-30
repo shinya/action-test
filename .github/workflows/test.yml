@@ -42,4 +42,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Result check
-        run: echo '${{ toJSON(needs) }}' | jq 'to_entries | map(.key + " " + .value.result) | join("\n")'
+        run: |
+          echo '${{ toJSON(needs) }}' | map(.value.result)' | jq -r .[] | grep -v success | tee /tmp/result
+          if [ "$(wc -l < /tmp/result)" -eq "0" ]; then
+            echo 'CAN_MERGE=ok' | tee -a "$GITHUB_ENV"
+          else
+            echo 'CAN_MERGE=ng' | tee -a "$GITHUB_ENV"
+          fi
+
+      - name: Approve PR
+        if: env.CAN_MERGE == 'ok'
+        run: gh pr review "$PR_URL" --approve
+
+      - name: Enable auto-merge
+        if: env.CAN_MERGE == 'ok'
+        run: gh pr merge --merge --auto "$PR_URL"
+
+      - name: merge ng
+        if: env.CAN_MERGE == 'ng'
+        run: |
+          echo "Can't Merge"
+          exit 1
