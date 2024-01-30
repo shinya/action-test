@@ -1,0 +1,63 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - '*'
+    tags:
+      - '*'
+    paths:
+      - '**'
+      - '!*.md'
+  pull_request:
+    paths:
+      - '**'
+      - '!*.md'
+
+jobs:
+  success-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hello
+        run: echo 'Hello, World!'
+  success-job2:
+    runs-on: ubuntu-latest
+    steps:
+      - name: step
+        run: |
+          echo "do something3"
+          exit 1
+  success-job3:
+    if: false
+    runs-on: ubuntu-latest
+    steps:
+      - name: step
+        run: |
+          echo "skip always"
+  ResultCheck:
+    needs: [success-job, success-job2, success-job3]
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Result check
+        run: |
+          echo '${{ toJSON(needs) }}' |  jq 'to_entries | map(.value.result)' | jq -r .[] | grep -v success | tee /tmp/result
+          if [ "$(wc -l < /tmp/result)" -eq "0" ]; then
+            echo 'CAN_MERGE=ok' | tee -a "$GITHUB_ENV"
+          else
+            echo 'CAN_MERGE=ng' | tee -a "$GITHUB_ENV"
+          fi
+
+      - name: Approve PR
+        if: env.CAN_MERGE == 'ok'
+        run: gh pr review "$PR_URL" --approve
+
+      - name: Enable auto-merge
+        if: env.CAN_MERGE == 'ok'
+        run: gh pr merge --merge --auto "$PR_URL"
+
+      - name: merge ng
+        if: env.CAN_MERGE == 'ng'
+        run: |
+          echo "Can't Merge"
+          exit 1
