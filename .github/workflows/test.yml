@@ -43,7 +43,7 @@ jobs:
     steps:
       - name: Result check
         run: |
-          echo '${{ toJSON(needs) }}' | map(.value.result)' | jq -r .[] | grep -v success | tee /tmp/result
+          echo '${{ toJSON(needs) }}' |  jq 'to_entries | map(.value.result)' | jq -r .[] | grep -v success | tee /tmp/result
           if [ "$(wc -l < /tmp/result)" -eq "0" ]; then
             echo 'CAN_MERGE=ok' | tee -a "$GITHUB_ENV"
           else
