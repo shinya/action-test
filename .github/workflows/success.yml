@@ -26,9 +26,7 @@ jobs:
       - name: step
         run: |
           echo "do something3"
-          exit 1
   success-job3:
-    if: false
     runs-on: ubuntu-latest
     steps:
       - name: step
