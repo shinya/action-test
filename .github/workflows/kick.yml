@@ -2,7 +2,7 @@ name: Kick
 
 on:
   workflow_run:
-    workflows: [Success-jobs]
+    workflows: [Success]
     types: [completed]
 
 jobs:

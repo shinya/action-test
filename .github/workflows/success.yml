@@ -1,5 +1,5 @@
-name: Success-jobs
-run-name: Success-jobs
+name: Success
+run-name: Success
 
 on:
   push:
