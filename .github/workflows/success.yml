@@ -1,4 +1,5 @@
 name: Success-jobs
+run-name: Success-jobs
 
 on:
   push:
