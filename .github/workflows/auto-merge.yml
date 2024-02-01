@@ -3,9 +3,9 @@ name: auto-merge
 on:
   pull_request_review:
     types: [submitted]
-  workflow_run:
-    workflows: [Test]
-    types: [completed]
+  # workflow_run:
+  #   workflows: [Test]
+  #   types: [completed]
 
 
 permissions:

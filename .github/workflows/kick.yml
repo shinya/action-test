@@ -2,11 +2,11 @@ name: Kick
 
 on:
   workflow_run:
-    workflows: [Success]
+    workflows: [pre-merge]
     types: [completed]
 
 jobs:
-  success-job:
+  job-check:
     runs-on: ubuntu-latest
     steps:
       - name: Hello

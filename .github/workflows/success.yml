@@ -1,5 +1,5 @@
-name: Success
-run-name: Success
+name: pre-merge
+run-name: pre-merge
 
 on:
   push:
