@@ -4,13 +4,28 @@ on:
   workflow_run:
     workflows: [pre-merge]
     types: [completed]
+  pull_request_review:
+    types: [submitted]
+
 
 jobs:
   job-check:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: |
+      github.event.workflow_run.conclusion == 'success'
+      && github.event.workflow_run.name == 'pre-merge'
     steps:
-      - name: Hello
+      - name: success
         run:  |
           echo 'Worked upon job completion!'
           echo '${{ toJSON(github.event.workflow_run) }}'
+
+  failed:
+    runs-on: ubuntu-latest
+    if: ${{ always() }}
+    steps:
+      - name: failed
+        run:  |
+          echo 'Task is failed'
+          echo '${{ toJSON(github.event.workflow_run) }}'
+          exit 1
