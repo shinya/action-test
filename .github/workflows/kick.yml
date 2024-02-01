@@ -1,8 +1,8 @@
-name: kick
+name: Kick
 
 on:
   workflow_run:
-    workflows: [Success]
+    workflows: [Success-jobs]
     types: [completed]
 
 jobs:
