@@ -13,4 +13,4 @@ echo '{
       "result": "skipped",
       "outputs": {}
     }
-  }' | jq 'to_entries | map(.key + " " + .value.result)' #| join("\n")'
+  }' | jq 'to_entries | map(.value.result)' | jq -r .[] | grep -v success | wc -l 

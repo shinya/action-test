@@ -1,0 +1,13 @@
+name: kick
+
+on:
+  workflow_run:
+    workflows: [Success]
+    types: [completed]
+
+jobs:
+  success-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hello
+        run: echo 'Worked upon job completion!'
