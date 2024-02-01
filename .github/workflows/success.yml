@@ -1,4 +1,5 @@
-name: Success pattern
+name: pre-merge
+run-name: pre-merge
 
 on:
   push:
@@ -54,11 +55,11 @@ jobs:
 
       - name: Approve PR
         if: env.CAN_MERGE == 'ok'
-        run: gh pr review "$PR_URL" --approve
+        run: echo gh pr review "$PR_URL" --approve
 
       - name: Enable auto-merge
         if: env.CAN_MERGE == 'ok'
-        run: gh pr merge --merge --auto "$PR_URL"
+        run: echo gh pr merge --merge --auto "$PR_URL"
 
       - name: merge ng
         if: env.CAN_MERGE == 'ng'

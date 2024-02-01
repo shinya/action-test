@@ -3,9 +3,9 @@ name: auto-merge
 on:
   pull_request_review:
     types: [submitted]
-  workflow_run:
-    workflows: [Test]
-    types: [completed]
+  # workflow_run:
+  #   workflows: [Test]
+  #   types: [completed]
 
 
 permissions:
@@ -19,6 +19,7 @@ jobs:
       - name: set env
         run: |
           echo 'HELLO=yes' | tee -a "$GITHUB_ENV"
+          echo '${{ toJSON(needs) }}'
   Hello2:
     needs: Hello
     runs-on: ubuntu-latest
