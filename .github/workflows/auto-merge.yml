@@ -7,7 +7,6 @@ on:
   #   workflows: [Test]
   #   types: [completed]
 
-
 permissions:
   pull-requests: write
   contents: write
@@ -25,16 +24,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Hello Check
-        if: env.HELLO == 'yes'
         run: |
           echo ${{github.event.workflow_run.conclusion}}
 
-    
   auto-merge:
     needs: [Hello, Hello2]
     if: |
       github.event.review.state == 'APPROVED'
-      && github.event.workflow_run.conclusion == 'success' 
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
@@ -42,9 +38,13 @@ jobs:
     env:
       PR_URL: ${{github.event.pull_request.html_url}}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      REPO_NAME: ${{github.event.pull_request.head.repo.full_name}}
     steps:
+      - uses: actions/labeler@v4
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Checkout repository with preceding commits
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -57,11 +57,15 @@ jobs:
       #       echo 'ONLY_README=no' | tee -a "$GITHUB_ENV"
       #     fi
 
+      - name: echo env
+        run: echo "$REPO_NAME"
+
       - name: Approve PR
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
         # if: env.ONLY_README == 'yes'
         run: gh pr review "$PR_URL" --approve
 
       - name: Enable auto-merge
         # if: env.ONLY_README == 'yes'
         run: gh pr merge --merge --auto "$PR_URL"
-
